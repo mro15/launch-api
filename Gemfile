@@ -70,3 +70,9 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+# json parser
+gem 'json', '~> 2.6', '>= 2.6.3'
+
+# external APIs requests
+gem 'rest-client', '~> 2.1'
