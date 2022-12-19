@@ -3,12 +3,14 @@
 
 require 'json'
 require 'rest-client'
+require './lib/create_launch'
+
 
 namespace :launch do
   desc "Import launchs to database"
   task import_launchs: :environment do
     space_devs_url = 'https://ll.thespacedevs.com/2.0.0/launch/'
-    max_imports = 10
+    max_imports = 3
     limit = 3
     offset = 0
     response = RestClient.get(space_devs_url, {accept: :json, params: {limit: limit, offset: offset}})
@@ -26,6 +28,11 @@ namespace :launch do
       end
 
       # create db entries
+      launch_db_creator = CreateLaunch.new
+      to_create_entries = json_response["results"]
+      to_create_entries.each do |entry|
+        launch_db_creator.process_launch(entry)
+      end
 
       # handle with the remaining pages
       offset += limit
