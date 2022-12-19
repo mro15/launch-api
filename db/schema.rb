@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_19_154551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,16 +22,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
     t.string "service_provider_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "launch_id"
-    t.index ["launch_id"], name: "index_launch_service_providers_on_launch_id"
   end
 
   create_table "launch_statuses", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "launch_id"
-    t.index ["launch_id"], name: "index_launch_statuses_on_launch_id"
   end
 
   create_table "launches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -55,8 +51,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
     t.text "program"
     t.integer "status"
     t.datetime "imported_t"
+    t.integer "launch_status_id"
+    t.integer "rocket_id"
+    t.integer "mission_id"
+    t.integer "pad_id"
+    t.integer "launch_service_provider_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["launch_service_provider_id"], name: "index_launches_on_launch_service_provider_id"
+    t.index ["launch_status_id"], name: "index_launches_on_launch_status_id"
+    t.index ["mission_id"], name: "index_launches_on_mission_id"
+    t.index ["pad_id"], name: "index_launches_on_pad_id"
+    t.index ["rocket_id"], name: "index_launches_on_rocket_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -66,10 +72,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
     t.string "map_image"
     t.integer "total_launch_count"
     t.integer "total_landing_count"
-    t.bigint "pad_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pad_id"], name: "index_locations_on_pad_id"
   end
 
   create_table "missions", force: :cascade do |t|
@@ -78,20 +82,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
     t.string "description"
     t.string "launch_designator"
     t.string "mission_type"
+    t.bigint "orbit_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "launch_id"
-    t.index ["launch_id"], name: "index_missions_on_launch_id"
+    t.index ["orbit_id"], name: "index_missions_on_orbit_id"
   end
 
   create_table "orbits", force: :cascade do |t|
     t.integer "orbit_id"
     t.string "name"
     t.string "abbrev"
-    t.bigint "mission_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["mission_id"], name: "index_orbits_on_mission_id"
   end
 
   create_table "pads", force: :cascade do |t|
@@ -105,10 +107,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
     t.string "longitude"
     t.string "map_image"
     t.integer "total_launch_count"
+    t.bigint "location_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "launch_id"
-    t.index ["launch_id"], name: "index_pads_on_launch_id"
+    t.index ["location_id"], name: "index_pads_on_location_id"
   end
 
   create_table "rocket_configurations", force: :cascade do |t|
@@ -118,25 +120,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_023145) do
     t.string "family"
     t.string "full_name"
     t.string "variant"
-    t.bigint "rocket_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["rocket_id"], name: "index_rocket_configurations_on_rocket_id"
   end
 
   create_table "rockets", force: :cascade do |t|
+    t.bigint "rocket_configuration_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "launch_id"
-    t.index ["launch_id"], name: "index_rockets_on_launch_id"
+    t.index ["rocket_configuration_id"], name: "index_rockets_on_rocket_configuration_id"
   end
 
-  add_foreign_key "launch_service_providers", "launches"
-  add_foreign_key "launch_statuses", "launches"
-  add_foreign_key "locations", "pads"
-  add_foreign_key "missions", "launches"
-  add_foreign_key "orbits", "missions"
-  add_foreign_key "pads", "launches"
-  add_foreign_key "rocket_configurations", "rockets"
-  add_foreign_key "rockets", "launches"
+  add_foreign_key "launches", "launch_service_providers"
+  add_foreign_key "launches", "launch_statuses"
+  add_foreign_key "launches", "missions"
+  add_foreign_key "launches", "pads"
+  add_foreign_key "launches", "rockets"
+  add_foreign_key "missions", "orbits"
+  add_foreign_key "pads", "locations"
+  add_foreign_key "rockets", "rocket_configurations"
 end

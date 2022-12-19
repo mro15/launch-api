@@ -6,6 +6,7 @@ class CreateMissions < ActiveRecord::Migration[7.0]
       t.string :description
       t.string :launch_designator
       t.string :mission_type
+      t.references :orbit, null: true, foreign_key: true
 
       t.timestamps
     end

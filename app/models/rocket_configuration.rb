@@ -1,3 +1,3 @@
 class RocketConfiguration < ApplicationRecord
-  belongs_to :rocket, optional: true
+  has_many :rockets
 end

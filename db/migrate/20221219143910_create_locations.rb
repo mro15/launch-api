@@ -7,7 +7,6 @@ class CreateLocations < ActiveRecord::Migration[7.0]
       t.string :map_image
       t.integer :total_launch_count
       t.integer :total_landing_count
-      t.references :pad, null: true, foreign_key: true
 
       t.timestamps
     end

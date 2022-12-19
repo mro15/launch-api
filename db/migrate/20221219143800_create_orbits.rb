@@ -4,7 +4,6 @@ class CreateOrbits < ActiveRecord::Migration[7.0]
       t.integer :orbit_id
       t.string :name
       t.string :abbrev
-      t.references :mission, null: true, foreign_key: true
 
       t.timestamps
     end

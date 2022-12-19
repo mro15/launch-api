@@ -21,6 +21,11 @@ class CreateLaunches < ActiveRecord::Migration[7.0]
       t.text :program
       t.integer :status
       t.datetime :imported_t
+      t.references :launch_status, null: true, foreign_key: true, index: true, type: :integer
+      t.references :rocket, null: true, foreign_key: true, index: true, type: :integer
+      t.references :mission, null: true, foreign_key: true, index: true, type: :integer
+      t.references :pad, null: true, foreign_key: true, index: true, type: :integer
+      t.references :launch_service_provider, null: true, foreign_key: true, index: true, type: :integer
 
       t.timestamps
     end

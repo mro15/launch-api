@@ -1,3 +1,4 @@
 class Rocket < ApplicationRecord
-  has_one :rocket_configuration, dependent: :destroy
+  has_many :launches
+  belongs_to :rocket_configuration
 end

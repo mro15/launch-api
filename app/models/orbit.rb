@@ -1,3 +1,3 @@
 class Orbit < ApplicationRecord
-  belongs_to :mission, optional: true
+  has_many :missions
 end
