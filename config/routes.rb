@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  #get "/launchers", to: "launchers#index"
+  #put "/launchers/:launchId", to: "launchers#update"
+  resources :launchers, only: [:index, :show, :update, :destroy]
+
 end
