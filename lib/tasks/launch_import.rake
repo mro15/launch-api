@@ -9,8 +9,8 @@ namespace :launch do
   desc "Import launchs to database"
   task import_launchs: :environment do
 
-    max_imports = 10
-    limit = 3
+    max_imports = 2000
+    limit = 1000
     offset = 0
 
     api_requester = GetDataFromApi.new(max_imports: max_imports)
