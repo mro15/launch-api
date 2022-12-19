@@ -1,58 +1,42 @@
 # launch_import
 # This task imports the lauchs from the Space Devs API
 
-require 'json'
-require 'rest-client'
 require './lib/create_launch'
+require './lib/get_data_from_api'
 
 
 namespace :launch do
   desc "Import launchs to database"
   task import_launchs: :environment do
-    space_devs_url = 'https://ll.thespacedevs.com/2.0.0/launch/'
-    max_imports = 3
+
+    max_imports = 10
     limit = 3
     offset = 0
-    response = RestClient.get(space_devs_url, {accept: :json, params: {limit: limit, offset: offset}})
-    # check response status
-    response_status_code = response.code
 
-    if response_status_code == 200
-      # parse the first page
-      json_response = JSON.parse(response.body)
-      total_results = json_response["count"]
+    api_requester = GetDataFromApi.new(max_imports: max_imports)
+    first_page_results = api_requester.get_first_page(limit: limit, offset: offset)
 
-      # deal with less entries
-      if max_imports > total_results
-        max_imports = total_results
-      end
+    if first_page_results
 
       # create db entries
       launch_db_creator = CreateLaunch.new
-      to_create_entries = json_response["results"]
-      to_create_entries.each do |entry|
+      first_page_results.each do |entry|
         launch_db_creator.process_launch(entry)
       end
 
       # handle with the remaining pages
       offset += limit
-      while offset < max_imports
-        # get the new page
-        response = RestClient.get(space_devs_url, {accept: :json, params: {limit: limit, offset: offset}})
-        response_status_code = response.code
-
-        if response_status_code == 200
-          json_response = JSON.parse(response.body)
-          # create db entries
-
+      while offset < api_requester.max_imports
+        any_page_results = api_requester.get_any_page(limit: limit, offset: offset)
+        if any_page_results
+          any_page_results.each do |entry|
+            launch_db_creator.process_launch(entry)
+          end
           offset += limit
         else
-          p 'Something is wrong with Space devs API. Response code: ' + response_status_code
           break
         end
       end
-    else
-      p 'Something is wrong with Space devs API. Response code: ' + response_status_code
     end
   end
 end

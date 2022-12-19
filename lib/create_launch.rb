@@ -110,7 +110,7 @@ class CreateLaunch
     end
 
     if launch.save
-      p 'Launch id: ' + launch.id + 'successfully imported to database'
+      p 'Launch id: ' + launch.id + ' successfully imported to database'
     else
       p 'Error: ' + launch.errors.full_messages
     end
