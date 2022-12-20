@@ -28,7 +28,26 @@ class LaunchersController < ApplicationController
   end
 
   def launch_params
-    params.require(:launch).permit(:url, :name, :net)
+    params.require(:launch).permit(
+      :status,
+      :url,
+      :name,
+      :net,
+      :slug,
+      :window_end,
+      :window_start,
+      :inhold,
+      :tbddate,
+      :tbdtime,
+      :probability,
+      :holdreason,
+      :failreason,
+      :hashtag,
+      :webcast_live,
+      :image,
+      :infographic,
+      :program
+    )
   end
 
   def set_launch
