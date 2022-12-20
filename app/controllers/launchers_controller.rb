@@ -4,18 +4,18 @@ class LaunchersController < ApplicationController
 
   # GET /launchers
   def index
-    @launchers = Launch.all
+    @launchers = Launch.page(params[:page]).per(params[:per_page])
     render json: @launchers
   end
 
   def show
-    render json: @launch, include: ['rocket']
+    render json: @launch
   end
 
   # PUT /launchers/:launchId
   def update
     if @launch.update(launch_params)
-      render json: @launch, include: ['rocket'],  status: :ok
+      render json: @launch
     else
       render json: @launch.errors, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class LaunchersController < ApplicationController
   end
 
   def set_launch
-    @launch = Launch.includes(:rocket).where(id: params[:id]).first
+    @launch = Launch.where(id: params[:id]).first
     render json: {}, status: :not_found if @launch.blank?
     @launch
   end

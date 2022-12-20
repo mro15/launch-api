@@ -110,6 +110,9 @@ GEM
       activesupport (>= 5.0.0)
     json (2.6.3)
     jsonapi-renderer (0.2.2)
+    kaminari (0.17.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -237,6 +240,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   json (~> 2.6, >= 2.6.3)
+  kaminari (~> 0.17.0)
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4)

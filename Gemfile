@@ -48,9 +48,6 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-# model json serializer
-gem 'active_model_serializers', '~> 0.10.13'
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
@@ -79,3 +76,9 @@ gem 'json', '~> 2.6', '>= 2.6.3'
 
 # external APIs requests
 gem 'rest-client', '~> 2.1'
+
+# model json serializer
+gem 'active_model_serializers', '~> 0.10.13'
+
+# pagination
+gem 'kaminari', '~> 0.17.0'
