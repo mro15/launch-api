@@ -11,7 +11,7 @@ class LaunchersController < ApplicationController
   end
 
   def show
-    render json: @launch
+    render json: @launch, include: ['*', 'rocket.rocket_configuration', 'mission.orbit', 'pad.location']
   end
 
   # PUT /launchers/:launchId
