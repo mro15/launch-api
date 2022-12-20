@@ -17,7 +17,7 @@ class LaunchersController < ApplicationController
   # PUT /launchers/:launchId
   def update
     if @launch.update(launch_params)
-      render json: @launch
+      render json: @launch, include: ['*', 'rocket.rocket_configuration', 'mission.orbit', 'pad.location']
     else
       render json: @launch.errors, status: :unprocessable_entity
     end
