@@ -1,4 +1,6 @@
 class LaunchersController < ApplicationController
+  include ::Authenticator
+
   before_action :set_launch, only: [:show, :update, :destroy]
 
 
@@ -55,4 +57,5 @@ class LaunchersController < ApplicationController
     render json: {}, status: :not_found if @launch.blank?
     @launch
   end
+
 end

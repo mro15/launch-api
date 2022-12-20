@@ -10,7 +10,7 @@ namespace :launch do
   task import_launchs: :environment do
 
     max_imports = 2000
-    limit = 1000
+    limit = 500
     offset = 0
 
     api_requester = GetDataFromApi.new(max_imports: max_imports)
