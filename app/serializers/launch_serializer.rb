@@ -4,6 +4,7 @@ class LaunchSerializer < ActiveModel::Serializer
   belongs_to :launch_status
   belongs_to :launch_service_provider
   belongs_to :mission
+  belongs_to :pad
 
   attributes \
     :id,

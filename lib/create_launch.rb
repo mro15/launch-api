@@ -88,6 +88,38 @@ class CreateLaunch
     orbit
   end
 
+  def create_pad_object(pad_data)
+    pad = Pad.where(id: pad_data["id"]).first_or_initialize
+    pad.url = pad_data["url"].present? ? pad_data["url"] : ""
+    pad.agency_id = pad_data["agency_id"].present? ? pad_data["agency_id"] : nil
+    pad.name = pad_data["name"].present? ? pad_data["name"] : ""
+    pad.info_url = pad_data["info_url"].present? ? pad_data["info_url"] : ""
+    pad.wiki_url = pad_data["wiki_url"].present? ? pad_data["wiki_url"] : ""
+    pad.map_url = pad_data["map_url"].present? ? pad_data["map_url"] : ""
+    pad.latitude = pad_data["latitude"].present? ? pad_data["latitude"] : ""
+    pad.longitude = pad_data["longitude"].present? ? pad_data["longitude"] : ""
+    pad.map_image = pad_data["map_image"].present? ? pad_data["map_image"] : ""
+    pad.total_launch_count = pad_data["total_launch_count"].present? ? pad_data["total_launch_count"] : 0
+    # Location
+    if pad_data["location"].present?
+      pad.location = create_location_object(pad_data["location"])
+    end
+    pad.save
+    pad
+  end
+
+  def create_location_object(location_data)
+    location = Location.where(id: location_data["id"]).first_or_initialize
+    location.url = location_data["url"].present? ? location_data["url"] : ""
+    location.name = location_data["name"].present? ? location_data["name"] : ""
+    location.country_code = location_data["country_code"].present? ? location_data["country_code"] : ""
+    location.map_image = location_data["map_image"].present? ? location_data["map_image"] : ""
+    location.total_launch_count = location_data["total_launch_count"].present? ? location_data["total_launch_count"] : 0
+    location.total_landing_count = location_data["total_landing_count"].present? ? location_data["total_landing_count"] : 0
+    location.save
+    location
+  end
+
   def process_launch(entry)
     # Launch
     launch = create_launch_object(entry)
@@ -105,6 +137,11 @@ class CreateLaunch
     #Rocket
     if entry["rocket"].present?
       launch.rocket = create_rocket_object(entry["rocket"])
+    end
+
+    # Pad
+    if entry["pad"].present?
+      launch.pad = create_pad_object(entry["pad"])
     end
 
     # Mission
