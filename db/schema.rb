@@ -95,7 +95,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_20_170152) do
   end
 
   create_table "orbits", force: :cascade do |t|
-    t.integer "orbit_id"
     t.string "name"
     t.string "abbrev"
     t.datetime "created_at", null: false
