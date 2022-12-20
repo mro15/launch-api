@@ -1,3 +1,5 @@
+require 'date'
+
 class CreateLaunch
 
   def create_launch_object(entry)
@@ -20,7 +22,8 @@ class CreateLaunch
     launch.image = entry['image'].present? ? entry['image'] : ""
     launch.infographic = entry['infographic'].present? ? entry['infographic'] : ""
     launch.program = entry['program'].present? ? entry['program'] : ""
-    # TODO status
+    launch.status = 2 # published
+    launch.imported_t = DateTime.current()
     launch
   end
 
