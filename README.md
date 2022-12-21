@@ -146,5 +146,5 @@ First of all, you will need a valid API key, so consult the `api_keys` table and
 - DELETE `/launchers/:launchId`
 	```sh
 	curl --location --request DELETE 'localhost:3000/launchers/48bc7deb-b2e1-46c2-ab63-0ce00fbd192b' \
-	--header 'X-API-KEY: cgStXg_eIHszJ3j4VjqkCLqrVp6kZH4xUgZ5pH5nJSM'
+	--header 'X-API-KEY: API-KEY-VALUE'
 	```
